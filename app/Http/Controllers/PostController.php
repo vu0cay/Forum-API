@@ -22,7 +22,7 @@ class PostController extends Controller
         $posts = Post::find($id);
         return response()->json(PostResource::collection([$posts]),200);
     }
-    public function create(Request $request) : JsonResponse {
+    public function store(Request $request) : JsonResponse {
         $validator = Validator::make($request->all(), [
             'content' => 'required|string',
             'user_id' => 'required',
