@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('student_id');
+            $table->string('student_id')->unique();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
@@ -41,6 +41,16 @@ return new class extends Migration
             'student_id' => 'B2203594',
             'password' => Hash::make("123123123"),
             'email' => 'test@example.com',
+        ]);
+        User::factory()->create([
+            'student_id' => 'B2203592',
+            'password' => Hash::make("123123123"),
+            'email' => 'test2@example.com',
+        ]);
+        User::factory()->create([
+            'student_id' => 'B2203593',
+            'password' => Hash::make("123123123"),
+            'email' => 'test1@example.com',
         ]);
     }
 

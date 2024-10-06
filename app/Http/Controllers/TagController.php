@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 class TagController extends Controller
 {
     public function __invoke(Tag $tag) {
-        $posts = $tag->posts()->with('user', 'tags', 'comments')->get();
+        $posts = $tag->posts()->with( 'user', 'tags', 'comments', 'votes')->get();
         return response()->json(PostResource::collection($posts),200);
     }
 }

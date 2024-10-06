@@ -24,7 +24,11 @@ class Post extends Model
     }
     public function user() : BelongsTo 
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'student_id', 'student_id');
+    }
+    public function votes() : HasMany 
+    {
+        return $this->hasMany(Vote::class, 'post_id', 'id');
     }
 
 }

@@ -12,7 +12,7 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable
 {
     use HasFactory, Notifiable, HasApiTokens;
-
+    
     /**
      * The attributes that are mass assignable.
      *
@@ -23,7 +23,6 @@ class User extends Authenticatable
         'email',
         'password',
     ];
-
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -49,6 +48,15 @@ class User extends Authenticatable
 
     public function posts() : HasMany 
     {
-        return $this->hasMany(Post::class);
+        return $this->hasMany(Post::class, 'student_id', 'student_id');
+    }
+    public function comments() : HasMany 
+    {
+        return $this->hasMany(Comment::class, 'student_id', 'student_id');
+    }
+
+    public function votes() : HasMany 
+    {
+        return $this->hasMany(Vote::class, 'student_id', 'student_id');
     }
 }

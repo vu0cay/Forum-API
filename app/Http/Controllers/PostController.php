@@ -6,15 +6,18 @@ use App\Http\Resources\CommentResource;
 use App\Http\Resources\PostResource;
 use App\Http\Resources\TagResource;
 use App\Models\Post;
+use App\Models\Vote;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class PostController extends Controller
 {
     public function index() : JsonResponse {
         
-        $posts = Post::latest()->with(['user', 'tags', 'comments'])->get();
+        $posts = Post::latest()->with(['user', 'tags', 'comments', 'votes'])->get();
 
         return response()->json(PostResource::collection($posts),200);
     }
@@ -25,22 +28,19 @@ class PostController extends Controller
     public function store(Request $request) : JsonResponse {
         $validator = Validator::make($request->all(), [
             'content' => 'required|string',
-            'user_id' => 'required',
-            'vote' => 'integer|nullable'
         ]);
 
         if($validator->fails()) {
             return response()->json(["success" => false, "message" => "Please fill all fields."], 200);
         }
-
+        
         $post = Post::create([
-            "content" => $request["content"],
-            'user_id' => $request["user_id"],
-            "vote" => $request["vote"] ?? 0
+            "content" => $request->input("content"),
+            "student_id" => Auth::user()->student_id
         ]);
-
-        $post = Post::latest()->with('user', 'tags', 'comments')->first();
-
+        
+        $post = Post::latest()->with(['user', 'tags', 'comments', 'votes'])->first();
+        
         return response()->json(PostResource::collection([$post]),200);
     }
     public function update(Request $request , $id) : JsonResponse {
@@ -52,9 +52,10 @@ class PostController extends Controller
         if($validator->fails()) {
             return response()->json(["success" => false, "message" => "Please fill all fields."], 200);
         }
-        $post = Post::find($id);
+        $post = Auth::user()->posts()->find($id);
+
         if(!$post) 
-            return response()->json(["success" => false, "message" => "Not found"], 404);
+            return response()->json(["success" => false, "message" => "Cannot update"], 404);
         
         
         $post->update([
@@ -64,11 +65,12 @@ class PostController extends Controller
 
         return response()->json(PostResource::collection([$post]),200);
     }
-    public function delete($id) : JsonResponse {
 
-        $post = Post::find($id);
+    public function delete($id) : JsonResponse {
+        $post = Auth::user()->posts()->find($id);
+
         if(!$post) 
-            return response()->json(["success" => false, "message" => "Not found"], 404);
+            return response()->json(["success" => false, "message" => "Cannot delete"], 404);
             
         $post->delete();
 
@@ -91,6 +93,20 @@ class PostController extends Controller
             return response()->json(["success" => false, "message" => "Post not found"],404);
         $comments = $post->comments;
         return response()->json(CommentResource::collection($comments),200);
+
+    }
+    public function votes($id, Request $request) : JsonResponse {
+        
+        try {
+            $vote = Vote::create([
+                "post_id" => $id,
+                "student_id" => Auth::user()->student_id
+            ]);
+        } catch(Exception $e) {
+            return response()->json(["success" => false, "message" => $e->getMessage()], 404);
+        }
+
+        return response()->json(["success" => true, "message" => "Vote successfully"], 200);
 
     }
 }

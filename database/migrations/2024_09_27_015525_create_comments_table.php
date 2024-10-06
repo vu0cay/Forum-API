@@ -16,11 +16,11 @@ return new class extends Migration
             $table->id();
             $table->string('content');
             $table->unsignedBigInteger('post_id');
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('parent_id')->nullable();
+            $table->string('student_id');
+            $table->unsignedBigInteger('parent_id')->nullable()->default(null);
 
             $table->foreign('post_id')->references('id')->on('posts')->cascadeOnDelete();
-            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
+            $table->foreign('student_id')->references('student_id')->on('users')->cascadeOnDelete();
             $table->foreign('parent_id')->references('id')->on('comments')->cascadeOnDelete();
 
             $table->timestamps();
@@ -30,32 +30,32 @@ return new class extends Migration
         Comment::create([
             "content" => fake()->realText(50),
             "post_id" => 1,
-            "user_id" => 1,
+            "student_id" => "B2203594",
             "parent_id" => null
         ]);
         Comment::create([
             "content" => fake()->realText(50),
             "post_id" => 1,
-            "user_id" => 1,
+            "student_id" => "B2203592",
             "parent_id" => null
         ]);
         Comment::create([
             "content" => fake()->realText(50),
             "post_id" => 1,
-            "user_id" => 1,
+            "student_id" => "B2203594",
             "parent_id" => 1
         ]);
         Comment::create([
             "content" => fake()->realText(50),
             "post_id" => 1,
-            "user_id" => 1,
+            "student_id" => "B2203593",
             "parent_id" => 1
         ]);
         Comment::create([
             "content" => fake()->realText(50),
             "post_id" => 1,
-            "user_id" => 1,
-            "parent_id" => 1
+            "student_id" => "B2203592",
+            "parent_id" => 2
         ]);
 
 

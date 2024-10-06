@@ -11,7 +11,7 @@ class SearchController extends Controller
     public function __invoke() {
         
         $posts = Post::query()
-                ->with(['user', 'tags', 'comments'])
+                ->with(['user', 'tags', 'comments', 'votes'])
                 ->where('content', 'LIKE', '%'.request('q').'%')
                 ->get();
 
