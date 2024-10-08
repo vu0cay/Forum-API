@@ -6,6 +6,7 @@ use App\Http\Resources\CommentResource;
 use App\Http\Resources\PostResource;
 use App\Http\Resources\TagResource;
 use App\Models\Post;
+use App\Models\Tag;
 use App\Models\Vote;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -28,6 +29,7 @@ class PostController extends Controller
     public function store(Request $request) : JsonResponse {
         $validator = Validator::make($request->all(), [
             'content' => 'required|string',
+            'tags' => 'string'
         ]);
 
         if($validator->fails()) {
@@ -38,7 +40,13 @@ class PostController extends Controller
             "content" => $request->input("content"),
             "student_id" => Auth::user()->student_id
         ]);
-        
+        $str = $request->input("tags");
+        $tags = explode(",", $str);
+        foreach($tags as $tag) {
+            $tag = Tag::firstOrCreate(["name" => $tag]);
+            $post->tags()->attach($tag);
+        }
+
         $post = Post::latest()->with(['user', 'tags', 'comments', 'votes'])->first();
         
         return response()->json(PostResource::collection([$post]),200);
@@ -95,7 +103,7 @@ class PostController extends Controller
         return response()->json(CommentResource::collection($comments),200);
 
     }
-    public function votes($id, Request $request) : JsonResponse {
+    public function up_vote($id, Request $request) : JsonResponse {
         
         try {
             $vote = Vote::create([
@@ -107,6 +115,22 @@ class PostController extends Controller
         }
 
         return response()->json(["success" => true, "message" => "Vote successfully"], 200);
+
+    }
+    public function down_vote($id) : JsonResponse {
+        
+        try {
+            $vote = Vote::query()
+                        ->where("student_id", Auth::user()->student_id)
+                        ->where("post_id", $id)
+                        ->first();
+            // dd($vote);
+            $vote->delete();
+        } catch(Exception $e) {
+            return response()->json(["success" => false, "message" => $e->getMessage()], 404);
+        }
+
+        return response()->json(["success" => true, "message" => "Un vote successfully", "data"=>$vote], 200);
 
     }
 }

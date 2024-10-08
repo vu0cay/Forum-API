@@ -28,7 +28,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     // .............
     // votes routes here
     
-    Route::post('/posts/{id}/votes', [PostController::class, 'votes']);
+    Route::post('/posts/{id}/votes', [PostController::class, 'up_vote']);
+    Route::delete('/posts/{id}/votes', [PostController::class, 'down_vote']);
     // .............
 });
 
