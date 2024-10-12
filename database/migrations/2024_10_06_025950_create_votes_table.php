@@ -31,16 +31,18 @@ return new class extends Migration
         ]);
         Vote::create([
             "post_id" => 1,
-            "student_id" => "B2203593"
+            "student_id" => "B2203588"
         ]);
-        Vote::create([
-            "post_id" => 1,
-            "student_id" => "B2203592"
-        ]);
+       
 
         Vote::create([
             "post_id" => 2,
-            "student_id" => "B2203593"
+            "student_id" => "B2203588"
+        ]);
+
+        Vote::create([
+            "post_id" => 3,
+            "student_id" => "B2203594"
         ]);
     }
 

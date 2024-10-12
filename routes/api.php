@@ -5,6 +5,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\TagController;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -44,8 +45,11 @@ Route::get('/tags/{tag:name}', TagController::class);
 
 Route::get('/search', SearchController::class);
 
-
 Route::get('/user', [SessionController::class, 'user'])->middleware('auth:sanctum');
+Route::get('/user/{student_id}', function ($student_id) {
+    // validate student_id
+    return User::where('student_id', $student_id)->first();
+} );
 
 
 

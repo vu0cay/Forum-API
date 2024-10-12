@@ -29,7 +29,7 @@ class PostController extends Controller
     public function store(Request $request) : JsonResponse {
         $validator = Validator::make($request->all(), [
             'content' => 'required|string',
-            'tags' => 'string'
+            'tags' => 'string|nullable'
         ]);
 
         if($validator->fails()) {
@@ -41,10 +41,13 @@ class PostController extends Controller
             "student_id" => Auth::user()->student_id
         ]);
         $str = $request->input("tags");
-        $tags = explode(",", $str);
-        foreach($tags as $tag) {
-            $tag = Tag::firstOrCreate(["name" => $tag]);
-            $post->tags()->attach($tag);
+        if($str) {
+            
+            $tags = explode(",", $str);
+            foreach($tags as $tag) {
+                $tag = Tag::firstOrCreate(["name" => $tag]);
+                $post->tags()->attach($tag);
+            }
         }
 
         $post = Post::latest()->with(['user', 'tags', 'comments', 'votes'])->first();
@@ -100,7 +103,8 @@ class PostController extends Controller
         if(!$post) 
             return response()->json(["success" => false, "message" => "Post not found"],404);
         $comments = $post->comments;
-        return response()->json(CommentResource::collection($comments),200);
+        
+        return response()->json($comments,200);
 
     }
     public function up_vote($id, Request $request) : JsonResponse {

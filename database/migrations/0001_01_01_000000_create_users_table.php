@@ -16,6 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('student_id')->unique();
             $table->string('email')->unique();
+            $table->string('name');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
@@ -38,19 +39,28 @@ return new class extends Migration
         });
         
         User::factory()->create([
+            'student_id' => 'B2203567',
+            'name' => 'Mai Nhat Minh',
+            'password' => Hash::make("123123123"),
+            'email' => 'minhb2203567@student.ctu.edu.vn',
+        ]);
+        User::factory()->create([
+            'student_id' => 'B2203588',
+            'name' => 'Le Lu Huyen Tran',
+            'password' => Hash::make("123123123"),
+            'email' => 'tranb2203588@student.ctu.edu.vn',
+        ]);
+        User::factory()->create([
+            'student_id' => 'B2203579',
+            'name' => 'La Tri Tam',
+            'password' => Hash::make("123123123"),
+            'email' => 'tamb2203579@student.ctu.edu.vn',
+        ]);
+        User::factory()->create([
             'student_id' => 'B2203594',
+            'name' => 'Nguyen Hoang Vu',
             'password' => Hash::make("123123123"),
-            'email' => 'test@example.com',
-        ]);
-        User::factory()->create([
-            'student_id' => 'B2203592',
-            'password' => Hash::make("123123123"),
-            'email' => 'test2@example.com',
-        ]);
-        User::factory()->create([
-            'student_id' => 'B2203593',
-            'password' => Hash::make("123123123"),
-            'email' => 'test1@example.com',
+            'email' => 'vub2203594@student.ctu.edu.vn',
         ]);
     }
 

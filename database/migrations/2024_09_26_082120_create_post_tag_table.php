@@ -37,7 +37,7 @@ return new class extends Migration
 
         $post = Post::create([
             "content" => "Bitcoin has tumbled from its record high of $58,000 after words from three wise men...",
-            "student_id" => "B2203592",
+            "student_id" => "B2203588",
         ]);
         $tags = Tag::whereIn('name', ['finance'])->get();
         $post->tags()->attach($tags);
@@ -45,7 +45,7 @@ return new class extends Migration
 
         $post = Post::create([
             "content" => "Bitcoin has tumbled from its record high of $58,000 after words from three wise men...",
-            "student_id" => "B2203592",
+            "student_id" => "B2203567",
         ]);
         $tags = Tag::whereIn('name', ['finance', 'bitcoin'])->get();
         $post->tags()->attach($tags);
@@ -53,7 +53,7 @@ return new class extends Migration
 
         $post = Post::create([
             "content" => "Bitcoin has tumbled from its record high of $58,000 after words from three wise men...",
-            "student_id" => "B2203593",
+            "student_id" => "B2203579",
         ]);
         $tags = Tag::whereIn('name', ['crypto'])->get();
         $post->tags()->attach($tags);
@@ -61,7 +61,7 @@ return new class extends Migration
 
         $post = Post::create([
             "content" => "Bitcoin has tumbled from its record high of $58,000 after words from three wise men...",
-            "student_id" => "B2203593",
+            "student_id" => "B2203594",
         ]);
         $tags = Tag::whereIn('name', ['bitcoin', 'crypto'])->get();
         $post->tags()->attach($tags);

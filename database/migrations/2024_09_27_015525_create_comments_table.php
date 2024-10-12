@@ -36,25 +36,25 @@ return new class extends Migration
         Comment::create([
             "content" => fake()->realText(50),
             "post_id" => 1,
-            "student_id" => "B2203592",
+            "student_id" => "B2203579",
             "parent_id" => null
         ]);
         Comment::create([
             "content" => fake()->realText(50),
             "post_id" => 1,
+            "student_id" => "B2203588",
+            "parent_id" => 1
+        ]);
+        Comment::create([
+            "content" => fake()->realText(50),
+            "post_id" => 1,
+            "student_id" => "B2203567",
+            "parent_id" => 1
+        ]);
+        Comment::create([
+            "content" => fake()->realText(50),
+            "post_id" => 1,
             "student_id" => "B2203594",
-            "parent_id" => 1
-        ]);
-        Comment::create([
-            "content" => fake()->realText(50),
-            "post_id" => 1,
-            "student_id" => "B2203593",
-            "parent_id" => 1
-        ]);
-        Comment::create([
-            "content" => fake()->realText(50),
-            "post_id" => 1,
-            "student_id" => "B2203592",
             "parent_id" => 2
         ]);
 
