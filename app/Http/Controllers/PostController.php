@@ -52,17 +52,18 @@ class PostController extends Controller
 
         $post = Post::latest()->with(['user', 'tags', 'comments', 'votes'])->first();
         
-        return response()->json(PostResource::collection([$post]),200);
+        return response()->json(["success" => true, "data" => PostResource::collection([$post])],200);
     }
     public function update(Request $request , $id) : JsonResponse {
         $validator = Validator::make($request->all(), [
-            'content' => 'string|nullable',
-            'vote' => 'integer'
+            'content' => 'required|string',
+            'tags' => 'string|nullable'
         ]);
 
         if($validator->fails()) {
             return response()->json(["success" => false, "message" => "Please fill all fields."], 200);
         }
+
         $post = Auth::user()->posts()->find($id);
 
         if(!$post) 
@@ -70,11 +71,21 @@ class PostController extends Controller
         
         
         $post->update([
-            "content" => $request["content"] ?? $post["content"],
-            "vote" => $request["vote"]
+            "content" => $request["content"] ?? $post["content"]
         ]);
+        $str = $request->input("tags");
+        $post->tags()->detach();
+        if($str) {
+            $tags = explode(",", $str);
+            foreach($tags as $tag) {
+                $tag = Tag::firstOrCreate(["name" => $tag]);
+                $post->tags()->attach($tag);
+                
+            }
+        }
 
-        return response()->json(PostResource::collection([$post]),200);
+        $post = Post::latest()->with(['user', 'tags', 'comments', 'votes'])->first();
+        return response()->json(["success" => true, "data" => PostResource::collection([$post])],200);
     }
 
     public function delete($id) : JsonResponse {

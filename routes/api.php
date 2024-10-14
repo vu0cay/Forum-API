@@ -20,15 +20,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/posts', [PostController::class, 'store']);
     Route::put('/posts/{id}', [PostController::class, 'update']);
     Route::patch('/posts/{id}', [PostController::class, 'update']);
-    Route::delete('/posts/{id}', [PostController::class, 'delete']);
-    
+    Route::delete('/posts/{id}', [PostController::class, 'delete']); 
     // comments routes here
     Route::post('/comments', [CommentController::class, 'store']);
-    
-    
     // .............
     // votes routes here
-    
     Route::post('/posts/{id}/votes', [PostController::class, 'up_vote']);
     Route::delete('/posts/{id}/votes', [PostController::class, 'down_vote']);
     // .............
@@ -41,7 +37,6 @@ Route::get('/posts/{id}/comments', [PostController::class, 'comments']);
 Route::get('/tags/{tag:name}', TagController::class);
 // create tag routes here
 // .............
-
 
 Route::get('/search', SearchController::class);
 
