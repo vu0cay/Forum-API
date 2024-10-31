@@ -41,9 +41,14 @@ Route::get('/tags/{tag:name}', TagController::class);
 Route::get('/search', SearchController::class);
 
 Route::get('/user', [SessionController::class, 'user'])->middleware('auth:sanctum');
+
 Route::get('/user/{student_id}', function ($student_id) {
     // validate student_id
     return User::where('student_id', $student_id)->first();
+} );
+Route::get('/user/{student_id}/posts', function ($student_id) {
+    // validate student_id
+    return User::with('posts')->where('student_id', $student_id)->first();
 } );
 
 
