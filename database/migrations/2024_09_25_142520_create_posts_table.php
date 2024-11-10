@@ -17,6 +17,7 @@ return new class extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->string('content');
+            $table->string('thumbnail')->nullable();
             // $table->unsignedBigInteger(column: 'vote')->default(0);
             $table->string('student_id');
             $table->foreign('student_id')->references('student_id')->on('users')->cascadeOnDelete();

@@ -38,6 +38,7 @@ class PostController extends Controller
         
         $post = Post::create([
             "content" => $request->input("content"),
+            "thumbnail" => $request->input("thumbnail"),
             "student_id" => Auth::user()->student_id
         ]);
         $str = $request->input("tags");
@@ -71,7 +72,8 @@ class PostController extends Controller
         
         
         $post->update([
-            "content" => $request["content"] ?? $post["content"]
+            "content" => $request["content"] ?? $post["content"],
+            "thumbnail" => $request["thumbnail"] ?? $post["thumbnail"],
         ]);
         $str = $request->input("tags");
         $post->tags()->detach();
@@ -114,7 +116,9 @@ class PostController extends Controller
         if(!$post) 
             return response()->json(["success" => false, "message" => "Post not found"],404);
         $comments = $post->comments;
-        
+        foreach($comments as $comment) {
+            $comment->load(['user']);    
+        }
         return response()->json($comments,200);
 
     }
