@@ -23,8 +23,9 @@ class PostController extends Controller
         return response()->json(PostResource::collection($posts),200);
     }
     public function show($id) : JsonResponse {
-        $posts = Post::find($id);
-        return response()->json(PostResource::collection([$posts]),200);
+        $posts = Post::find($id)->with(['user', 'tags', 'comments', 'votes'])->get();
+
+        return response()->json(PostResource::collection($posts),200);
     }
     public function store(Request $request) : JsonResponse {
         $validator = Validator::make($request->all(), [
