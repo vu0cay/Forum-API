@@ -18,7 +18,7 @@ class PostController extends Controller
 {
     public function index() : JsonResponse {
         
-        $posts = Post::latest()->with(['user', 'tags', 'comments', 'votes'])->get();
+        $posts = Post::latest()->with(['user', 'tags', 'comments.user', 'votes'])->get();
 
         return response()->json(PostResource::collection($posts),200);
     }

@@ -25,7 +25,7 @@ class CommentController extends Controller
             "parent_id" => $request->input("parent_id") 
         ]);
       
-        $comment = Auth::user()->comments()->latest()->first();
+        $comment = Auth::user()->comments()->latest()->with('user')->first();
         
         return response()->json(["success" => true, "message" => "Comment created successfully", "data" => $comment], 200);
 
