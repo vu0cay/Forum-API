@@ -48,7 +48,7 @@ Route::get('/user/{student_id}', function ($student_id) {
 } );
 Route::get('/user/{student_id}/posts', function ($student_id) {
     // validate student_id
-    return User::with('posts.tags', 'posts.comments', 'posts.votes')
+    return User::with('posts.tags', 'posts.comments.user', 'posts.votes')
                 ->where('student_id', $student_id)
                 ->first();
 } );
